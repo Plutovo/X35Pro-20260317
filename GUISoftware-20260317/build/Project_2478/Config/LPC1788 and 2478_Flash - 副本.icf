@@ -1,0 +1,112 @@
+define memory mem with size = 4G;
+
+if(IAR_LPC_2478_STK_LINK)
+{
+	define symbol __ICFEDIT_intvec_start__ = 0x00008000;
+	
+	define symbol __ICFEDIT_region_ROM_start__ = 0x00008044;
+	define symbol __ICFEDIT_region_ROM_end__   = 0x0007FFFF;
+	define symbol __ICFEDIT_region_RAM_start__ = 0x40000040;
+	define symbol __ICFEDIT_region_RAM_end__   = 0x4000FFFF;
+	
+	define symbol __ICFEDIT_size_cstack__   = 0x900;
+	define symbol __ICFEDIT_size_svcstack__ = 0x200;
+	define symbol __ICFEDIT_size_irqstack__ = 0x200;
+	define symbol __ICFEDIT_size_fiqstack__ = 0x40;
+	define symbol __ICFEDIT_size_undstack__ = 0x10;
+	define symbol __ICFEDIT_size_abtstack__ = 0x10;
+	define symbol __ICFEDIT_size_heap__     = 0x4000;
+	
+	
+	define region ROM_region        = mem:[from __ICFEDIT_region_ROM_start__            to __ICFEDIT_region_ROM_end__];
+	define region RAM_region        = mem:[from __ICFEDIT_region_RAM_start__            to __ICFEDIT_region_RAM_end__];
+	
+	define symbol __region_USB_DMA_RAM_start__  = 0x7FD00000;
+	define symbol __region_USB_DMA_RAM_end__    = 0x7FD03FFF;
+	define region USB_DMA_RAM_region= mem:[from __region_USB_DMA_RAM_start__    to __region_USB_DMA_RAM_end__];
+	
+	define symbol __region_EMAC_DMA_RAM_start__ = 0x7FE00000;
+	define symbol __region_EMAC_DMA_RAM_end__   = 0x7FE03FFF;
+	define region EMAC_DMA_RAM_region= mem:[from __region_EMAC_DMA_RAM_start__  to __region_EMAC_DMA_RAM_end__];
+	
+	define symbol __region_SDRAM_RAM_start__ = 0xA0000000;
+	define symbol __region_SDRAM_RAM_end__   = 0xA1FFFFFF;
+	define region SDRAM_region= mem:[from __region_SDRAM_RAM_start__  to __region_SDRAM_RAM_end__];
+	
+	define block CSTACK    with alignment = 8, size = __ICFEDIT_size_cstack__   { };
+	define block SVC_STACK with alignment = 8, size = __ICFEDIT_size_svcstack__ { };
+	define block IRQ_STACK with alignment = 8, size = __ICFEDIT_size_irqstack__ { };
+	define block FIQ_STACK with alignment = 8, size = __ICFEDIT_size_fiqstack__ { };
+	define block UND_STACK with alignment = 8, size = __ICFEDIT_size_undstack__ { };
+	define block ABT_STACK with alignment = 8, size = __ICFEDIT_size_abtstack__ { };
+	define block HEAP      with alignment = 8, size = __ICFEDIT_size_heap__     { };
+	
+	initialize by copy { readwrite };
+	do not initialize  { section .noinit };
+	
+	place      at address mem:__ICFEDIT_intvec_start__ { readonly section .intvec };
+	
+	place in ROM_region   { readonly };
+	place in RAM_region   { readwrite section .bss,readwrite section .iar.dynexit};
+	place in USB_DMA_RAM_region
+												{ readwrite section .data,block CSTACK, block SVC_STACK, block IRQ_STACK, block FIQ_STACK,
+													block UND_STACK, block ABT_STACK,};
+	place in EMAC_DMA_RAM_region
+												{ block HEAP  };
+	
+	place in SDRAM_region { readwrite data section SDRAM };
+	define exported symbol SDRAM_BASE_ADDR = __region_SDRAM_RAM_start__;
+}
+
+if(IAR_LPC_1788_STK_LINK)
+{
+	define symbol __ICFEDIT_intvec_start__ = 0x00004000;
+	
+	define symbol __ICFEDIT_region_ROM_start__ = 0x00004000;
+	define symbol __ICFEDIT_region_ROM_end__   = 0x0007FFFF;
+	define symbol __ICFEDIT_region_RAM_start__ = 0x10000000;
+	define symbol __ICFEDIT_region_RAM_end__   = 0x1000FFDF;
+	
+	define symbol __ICFEDIT_size_cstack__ = 0x1000;
+	define symbol __ICFEDIT_size_heap__   = 0x4000;
+	
+	
+	define symbol __CRP_start__   = 0x000042FC;
+	define symbol __CRP_end__     = 0x000042FF;
+
+	define region ROM_region   = mem:[from __ICFEDIT_region_ROM_start__   to __ICFEDIT_region_ROM_end__] - mem:[from  __CRP_start__ to __CRP_end__];
+	define region RAM_region   = mem:[from __ICFEDIT_region_RAM_start__   to __ICFEDIT_region_RAM_end__];
+	define region CRP_region   = mem:[from  __CRP_start__ to __CRP_end__];
+	
+	define symbol _AHB_RAM_start__  = 0x20000000;
+	define symbol _AHB_RAM_end__    = 0x20007FFF;
+	define region AHB_RAM_region = mem:[from _AHB_RAM_start__ to _AHB_RAM_end__];
+	
+	define symbol __region_SDRAM_start__ =  0xA0000000;
+	define symbol __region_SDRAM_end__    = 0xA1FFFFFF;
+	define symbol __region_SDRAM_VRAM_start__ =  0xA2000000;
+	define symbol __region_SDRAM_VRAM_end__    = 0xA3FFFFFF;
+	
+	define region SDRAM_region= mem:[from __region_SDRAM_start__  to __region_SDRAM_end__];
+	define region SDRAM_VRAM_region= mem:[from __region_SDRAM_VRAM_start__  to __region_SDRAM_VRAM_end__];
+	
+	define block CSTACK    with alignment = 8, size = __ICFEDIT_size_cstack__   { };
+	define block HEAP      with alignment = 8, size = __ICFEDIT_size_heap__     { };
+	
+	initialize by copy { readwrite };
+	do not initialize  { section .noinit };
+	
+	place at address mem:__ICFEDIT_intvec_start__ { readonly section .intvec };
+	place in ROM_region   { readonly };
+	place in RAM_region   { readwrite 
+													};
+	place in AHB_RAM_region
+												{ block HEAP,block CSTACK,readwrite section .data };
+							
+	place in SDRAM_VRAM_region
+												{ readwrite data section SDRAM_VRAM_MEMORY};
+	place in CRP_region  	{ section .crp };
+	
+	define exported symbol SDRAM_BASE_ADDR = __region_SDRAM_start__;
+	define exported symbol SDRAM_VRAM_BASE_ADDR = __region_SDRAM_VRAM_start__;
+}

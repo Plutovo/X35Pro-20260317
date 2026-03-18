@@ -1,0 +1,237 @@
+[JLinkDriver]
+WatchCond=_ 0
+Watch0=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
+Watch1=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
+CStepIntDis=_ 0
+TraceBufferSize=0x00010000
+TraceStallIfFIFOFull=0x00000000
+TracePortSize=0x00000004
+LeaveTargetRunning=_ 0
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[CodeCoverage]
+Enabled=_ 0
+[Profiling]
+Enabled=0
+[StackPlugin]
+Enabled=1
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnHow=0
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[DebugChecksum]
+Checksum=427931075
+[InstructionProfiling]
+Enabled=_ 0
+[RecentFlashDownload]
+Path=E:\SafeHeart_work\anesthesia\software\GUI\Vent_Monitor_8.4_20130325\build\IAR\Debug\Exe\LCD_Demo.out
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[Exceptions]
+StopOnUncaught=_ 0
+StopOnThrow=_ 0
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[Breakpoints]
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\..\board\include\iolpc1788 and 2478.h}.5668.1@1" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\..\board\include\iolpc1788 and 2478.h}.5668.1@1" 0 0 0 0 "" 0 ""
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\..\Application\TouchScreenCalibrate.c}.198.9@1" 1 0 0 0 "" 0 ""
+Count=3
+[Interrupts]
+Enabled=1
+[MemoryMap]
+Enabled=0
+Base=0
+UseAuto=0
+TypeViolation=1
+UnspecRange=1
+ActionState=1
+[TraceHelper]
+Enabled=0
+ShowSource=1
+[SWOTraceHWSettings]
+OverrideDefaultClocks=0
+CpuClock=72000000
+ClockAutoDetect=1
+ClockWanted=2250000
+JtagSpeed=2250000
+Prescaler=32
+TimeStampPrescIndex=0
+TimeStampPrescData=0
+PcSampCYCTAP=1
+PcSampPOSTCNT=15
+PcSampIndex=0
+DataLogMode=0
+ITMportsEnable=0
+ITMportsTermIO=0
+ITMportsLogFile=0
+ITMlogFile=$PROJ_DIR$\ITM.log
+[struct_types]
+Fmt0=JM1_SPO2_PARAMETERS-NoSensor	4	0
+Fmt1=JM1_SPO2_PARAMETERS-PerfusionIndex	4	0
+Fmt2=RTC_TIMER-RTC_Hour	3	0
+Fmt3=RTC_TIMER-RTC_Mday	3	0
+Fmt4=RTC_TIMER-RTC_Min	3	0
+Fmt5=RTC_TIMER-RTC_Mon	3	0
+Fmt6=RTC_TIMER-RTC_Sec	3	0
+[array_types]
+Fmt0=char[50]	4	0
+Fmt1=char[8]	4	0
+Fmt2=unsigned char[20]	4	0
+Fmt3=unsigned char[6]	1	0
+Fmt4=unsigned int[10]	4	0
+[watch_formats]
+Fmt0={W}0:AALessthan3MacTime_Count	3	0
+Fmt1={W}0:AA_Max	3	0
+Fmt2={W}0:AA_Module_Flag.PhaseInTypeModuleExist	3	0
+Fmt3={W}0:AcgoPromptFlag	3	0
+Fmt4={W}0:Cnt	4	0
+Fmt5={W}0:Drager_EtCO2_Config_On	3	0
+Fmt6={W}0:EMCDLYCTL	4	0
+Fmt7={W}0:IO0INTSTATR	4	0
+Fmt8={W}0:Irma_RX_Ctrl.R_nowbyte	3	0
+Fmt9={W}0:MasimoISA_EtCO2_Config_On	3	0
+Fmt10={W}0:Masimo_EtCO2_Config_On	3	0
+Fmt11={W}0:Menu_hWin.InfoWin.InfoChangeFlag	4	0
+Fmt12={W}0:PowerState	4	0
+Fmt13={W}0:RxByte	3	0
+Fmt14={W}0:SpO2_Parameters.PerfusionIndex	4	0
+Fmt15={W}0:Time.RTC_Min	3	0
+Fmt16={W}0:Time.RTC_Mon	3	0
+Fmt17={W}0:Time.RTC_Sec	3	0
+Fmt18={W}0:Trend_Addr	3	0
+Fmt19={W}0:WhatWhatFlag	3	0
+Fmt20={W}0:a11	4	0
+Fmt21={W}0:a22	4	0
+Fmt22={W}0:aaaa	4	0
+Fmt23={W}0:addr_cnt	3	0
+Fmt24={W}0:data	4	0
+Fmt25={W}0:iWin.InfoChangeFlag	4	0
+Fmt26={W}0:modes	4	0
+Fmt27={W}0:v	4	0
+Fmt28={W}42:AALessthan3MacTime_Count	3	0
+Fmt29={W}42:Module_Comm.GAS_CommFlag	1	0
+Fmt30={W}42:OS_TimeMS	4	0
+Fmt31={W}42:RxbufHead	1	0
+Fmt32={W}42:butter_left_count	3	0
+Fmt33={W}42:butter_press_count	3	0
+Fmt34={W}42:butter_right_count	3	0
+Fmt35={W}42:i	3	0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[CallStackLog]
+Enabled=0
+[DriverProfiling]
+Enabled=0
+Mode=3
+Graph=0
+Symbiont=0
+Exclusions=
+[SWOTraceWindow]
+PcSampling=0
+InterruptLogs=0
+ForcedTimeStamps=0
+EventCPI=0
+EventEXC=0
+EventFOLD=0
+EventLSU=0
+EventSLEEP=0
+[PowerLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=0
+Title_0=I0
+Symbol_0=0 4 1
+LiveEnabled=0
+LiveFile=PowerLogLive.log
+[DataLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+[EventLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[InterruptLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[PowerProbe]
+Frequency=10000
+Probe0=I0
+ProbeSetup0=2 1 1 2 0 0
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\Application\WIDGET_Multipage.c}.3369.4" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\Application\WIDGET_Multipage.c}.3758.6" 0 0 1 "" 0 "" 0
+Bp2=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\Application\DataShareProtocol\uart_dp.c}.189.5" 0 0 1 "" 0 "" 0
+Bp3=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\board\Interrupt.c}.139.19" 0 0 1 "" 0 "" 0
+Count=4
+[Aliases]
+A0=_ "" ""
+A1=_ "C:\Users\73146\Desktop\新建文件夹 (2)\GUISoftware\Application\DataShareProtocol\uart_dp.c" ""
+A2=_ "C:\Users\73146\Desktop\新建文件夹 (2)\GUISoftware\board\main.c" ""
+A3=_ "C:\Users\Administrator\Desktop\X6X45_20160425移植\GUI\Core\GUI_DispString.c" ""
+A4=_ "C:\Users\Administrator\Desktop\X6X45_20160425移植\GUI\Core\GUI_DrawBitmap.c" "E:\X45修改\X6X45_LPC1788_1.01.01.03\GUI\Core\GUI_DrawBitmap.c"
+A5=_ "C:\Users\Administrator\Desktop\X6X45_20160425移植\GUI\Core\GUI_TOUCH.c" "E:\X45修改\X6X45_LPC1788_1.01.01.03\GUI\Core\GUI_TOUCH.c"
+A6=_ "C:\Users\Administrator\Desktop\X6X45_20160425移植\GUI_X\GUI_X.c" ""
+A7=_ "C:\Users\pc\Desktop\X45++ - 副本 (2)\GUISoftware\Application\os_Prio\cpu_a.asm" "C:\Users\pc\Desktop\新建文件夹\X45++ Drager - 副本\GUISoftware\Application\os_Prio\cpu_a.asm"
+A8=_ "C:\Users\pc\Desktop\X45++ - 副本 (2)\GUISoftware\GUI\Core\GUIAlloc.c" "C:\Users\pc\Desktop\X45++ Drager\GUISoftware\GUI\Core\GUIAlloc.c"
+A9=_ "C:\Users\pc\Desktop\X45++ - 副本 (2)\GUISoftware\GUI\LCDDriver\LCD_NXP.c" "C:\Users\pc\Desktop\X45\GUISoftware\GUI\LCDDriver\LCD_NXP.c"
+A10=_ "C:\Users\pc\Desktop\X45++ - 副本 (2)\GUISoftware\GUI\Widget\TEXT.c" "C:\Users\pc\Desktop\X45++ Drager\GUISoftware\GUI\Widget\TEXT.c"
+A11=_ "C:\Users\pc\Desktop\X45++ - 副本 (2)\GUISoftware\GUI\Widget\WINDOW.c" "C:\Users\pc\Desktop\X45\GUISoftware\GUI\Widget\WINDOW.c"
+A12=_ "C:\Users\pc\Desktop\X45++ - 副本 (2)\GUISoftware\GUI_X\GUI_X.c" "C:\Users\pc\Desktop\X45++ Drager - 副本\GUISoftware\GUI_X\GUI_X.c"
+A13=_ "C:\Users\pc\Desktop\X45++ Drager - 副本\GUISoftware\board\main.c" "C:\Users\pc\Desktop\新建文件夹\X45++ Drager - 副本\GUISoftware\board\main.c"
+A14=_ "C:\Users\pc\Desktop\X45++ Drager\GUISoftware\Application\os_Prio\os_prio.c" "C:\Users\pc\Desktop\新建文件夹\X45++ Drager - 副本\GUISoftware\Application\os_Prio\os_prio.c"
+A15=_ "C:\Users\pc\Desktop\新建文件夹\X45++ Drager - 副本\GUISoftware\board\main.c" "C:\Users\pc\Desktop\X45++ Drager - 副本\GUISoftware\board\main.c"
+A16=_ "C:\Users\yuanliankun\Desktop\BPL\P320A\GUISoftware\board\main.c" "C:\Users\yuanliankun\Desktop\P320A_BPL\GUISoftware\board\main.c"
+A17=_ "C:\Users\yuanliankun\Desktop\GUISoftware\board\main.c" "C:\Users\yuanliankun\Desktop\P320A\GUISoftware\board\main.c"
+A18=_ "E:\X45修改\X45_linshi\X6X45_LPC1788_20170503\board\main.c" "E:\X45修改\X45_linshi\X6X45_LPC1788_20170518\board\main.c"
+A19=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUIVal.c" ""
+A20=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_Goto.c" ""
+A21=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_SetColor.c" ""
+A22=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\LCD_GetEx.c" ""
+A23=_ "E:\dujiqina\X6_20141128_V02\GUI\WM\WM_ForEachDesc.c" ""
+A24=_ "E:\dujiqina\X6_20141128_V02\GUI\WM\WM_IsWindow.c" ""
+A25=_ "E:\dujiqina\X6_20141128_V02\GUI\Widget\MULTIPAGE.c" ""
+A26=_ "E:\dujiqina\X6_20141204_V11\Application\WIDGET_Multipage.c" ""
+A27=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUIVal.c" ""
+A28=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_DrawFocusRect.c" ""
+A29=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_SetColor.c" ""
+A30=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_TOUCH_DriverAnalog.c" ""
+A31=_ "E:\dujiqina\X6_20141204_V11\GUI\WM\WM_IsWindow.c" ""
+A32=_ "E:\dujiqina\X6_20141204_V11\board\i2c.c" ""
+A33=_ "E:\合作项目\safe heart\呼吸机工作目录\software\Vent_Monitor\GUI\WM\WM_GetDialogItem.c" ""
+A34=_ "F:\人员交流\赵克强\X45 Driver\X6X45_LPC1788\board\device\src\NVIC.c" "E:\X45修改\X45_linshi\X6X45_LPC1788\board\device\src\NVIC.c"
+Count=35
+SuppressDialog=1

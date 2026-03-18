@@ -1,0 +1,395 @@
+//
+/******************************************************************************
+文件名称：co2_irma.h
+文件内容：co2_irma.c文件用的变、常量定义及宏定义、函数声明
+          CO2_IRMA模块主要完成对PHASE IN公司气体模块的底层控制
+                  返回模块产生的各种气体数据和设置模块的各种参数
+        本头文件可以被重复包含。并且只与同名的LIB文件配套使用。
+        硬件连接为RS-232串口，配置：9600bps,8数据位,1停止位,无校验、优先级、流控制。
+*******************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+#ifndef  __CO2_IRMA_H__
+#define  __CO2_IRMA_H__
+#ifdef   __CO2_IRMA_C__
+#define CO2_IRMA_EXT
+#else
+#define CO2_IRMA_EXT extern
+#endif
+#define IM_DEBUG              //调试用
+//版本
+#define  CO2_VER            100   //模块软件版本（如100表示版本为1.00）
+#define  IM_COMM_TMOUT      5000  //超时时间定义，单位为毫秒，本地不用，供用户做通讯超时控制时使用 
+///////////////////////串口基本数据协议定义，【注：无优先级和流控制】/////////////////////////////
+#define  IM_BAUT_RATE       9600  //气体模块波特率
+#define  IM_DATA_BIT        8     //数据位
+#define  IM_STOP_BIT        1     //停止位
+#define  IM_PARITY          0     //无奇偶校验
+//
+#define  IRMA_DATA_FLAG1    0xAA
+#define  IRMA_DATA_FLAG2    0x55
+////////////////////////////////////////////////////////////////////////////////
+#define AX_NO       0
+#define AX_Hal      1
+#define AX_Enf      2
+#define AX_Iso      3
+#define AX_Sev      4
+#define AX_Des      5 
+
+//切换泵
+#define PHASEIN_PUMP_OFF   0x00
+#define PHASEIN_PUMP_ON    0x01
+//
+//【发送指令】
+#define IM_TX_FRAME_LEN 5  //发送帧长度 
+enum  IM_TX_CMD
+{
+    IM_SET_MODE          = 0x00, //0x0: 设置模块状态[自检、睡眠、正常][default=->0->2]
+    IM_SET_APNE_TMOUT    = 0x01, //0x1: 设置窒息检测超时时间[20～60s] [default=20]
+    IM_SET_AX1           = 0x02, //0x2: 设置主麻醉气体类型[0～5]      [default=0]
+    IM_RESERVED          = 0x03, //0x3: 保留
+    IM_SET_O2VOL         = 0x04, //0x4: O2监测开关或设置浓度(有O2监测且O2打开时浓度设置无效)
+    IM_SET_N2OVOL        = 0x05, //0x5: 设置N2O浓度(有N2O监测功能的模块忽略此指令)
+    IM_ZERO_CAL          = 0x06, //0x6: 模块校正 [para: mainstream=255 / sidestream=30]
+    //【sidestream only】
+    // "=0x65..." "0x69" "0x6B" "0x6C" "0x6D"
+    //以下所有命令必须在工程师模式下使用
+    IM_CO2_SPANCAL = 0x65,    //0x65: 模块CO2定点校正[4.0%～11.0%]
+    IM_N2O_SPANCAL = 0x66,    //0x66: 模块N2O定点校正[30%～100%]
+    IM_AGT_SPANCAL = 0x67,    //0x67: 选定麻醉气定点校正[TBD]
+    IM_O2_SPANCAL  = 0x68,    //0x68: 模块O2定点校正[45%～100%]
+    IM_SET_IRO2_DELAY = 0x69, //0x69: 设置IR和O2检测的间隔[0~15s]
+    IM_SET_PUMP       = 0x6B, //0x6B: 设置旁流真空泵开启/关闭[1:开启/0:关闭] PhaseIN新增(旁流Only)
+    IM_SETO2_OPTION   = 0x6C, //0x6C: 置位/清0 模块自带O2选项位(Configure Register 0)[1:置位/0:清0] PhaseIN新增
+    IM_SETO2_TYPE     = 0x6D  //0x6D: 设置O2传感器类型[0:Galvanic/1:Servomex Pm1116] PhaseIN新增
+    ////////////////////////////////////////////////////////
+};
+//发送指令固定参数
+enum  IM_TX_CMD_PARA   //[ID=0x00]工作模式    (见enum IM_MODE)
+{
+    //[ID=0x02]麻醉气体类型(见enum IM_AGENT_ID)
+    //[ID=0x04]氧浓度监测开关【不要更改数值!!】
+    IM_O2_OFF   = 254, //254: 模块氧浓度监测禁止(无O2监测的模块此条无效)
+    IM_O2_ON    = 255, //255: 模块氧浓度监测使能(无O2监测的模块此条无效)
+    //[ID=0x06]
+    IM_CAL_SPAN =  30, //30 : 模块进入定点校正状态【sidestream only】
+    IM_CAL_NORM = 255  //255: 模块进入正常校正状态【mainstream only】
+};
+////////////////////////////////////////////////////////////////////////////////
+//【模块数据定义】 /////////////////////////////////////////////////////////////
+//工作模式    【不要更改顺序!!】
+enum  IM_MODE
+{
+    IM_MODE_SLFTST,    //0:模块自检
+    IM_MODE_SLEEP,     //1:模块睡眠
+    IM_MODE_NORM       //2:模块正常
+};
+//麻醉气体编号【不要更改顺序!!】
+enum  IM_AGENT
+{
+    IM_NO_AGT,         //0:无麻醉气体
+    IM_AGT_HAL,        //1:氟烷
+    IM_AGT_ENF,        //2:安氟醚
+    IM_AGT_ISO,        //3:异氟醚
+    IM_AGT_SEV,        //4:七氟醚
+    IM_AGT_DES         //5:地氟醚
+};
+//IRMA适合的O2传感器型号
+enum  IM_SENSOR_TYPE   //[RID5_Byte0/4(b0)]
+{
+    IM_SENTYPE_UNKNOW   = 0x00, //0=未知/保留
+    IM_SENTYPE_CO2ONLY  = 0x01, //只能监测CO2气体(黄色外壳)
+    IM_SENTYPE_ICU      = 0x02, //ICU专用,监测CO2, INSP/EXP O2, 无N2O(黄色外壳)
+    IM_SENTYPE_AX       = 0x03, //5种麻醉气体非自动识别,N2O,无O2 (蓝色外壳)
+    IM_SENTYPE_OR       = 0x04, //5种麻醉气体非自动识别,N2O,有O2,(蓝色外壳)
+    IM_SENTYPE_AXAUTO   = 0x05, //5种麻醉气体自动识别,N2O,无O2(红色外壳)
+    IM_SENTYPE_ORAUTO   = 0x06, //5种麻醉气体自动识别,N2O,有O2(红色外壳)
+    //旁流模块
+    IM_SENTYPE_ISA_CO2 = 0x11,   //旁流CO2或ICU,(黄色外壳)
+    IM_SENTYPE_ISA_AX  = 0x12,   //旁流5种麻醉气体非自动识别(或带O2)(蓝色外壳)
+    IM_SENTYPE_ISA_AXAUTO = 0x13 //旁流5种麻醉气体自动识别(或带O2)(红色外壳)
+    //////////////////////////
+};
+//ISA适合的O2传感器型号【sidestream only】【不要更改顺序!!】
+enum  IM_O2SEN_TYPE    //[RID5_Byte4_b2b3]
+{
+    IM_O2SEN_GALVANIC, //0:Galvanic O2 Sensor Fitted
+    IM_O2SEN_SERVO1116,//1:Servomex Pm1116 Sensor Fitted
+    IM_O2SEN_RESERVE0, //2:保留
+    IM_O2SEN_RESERVE1  //3:保留
+};
+////////////////////////////////////////////////////////////////////////////////
+//输出气体数据编号【不要更改顺序!!】
+//对应函数Irma_getWaveData(p1), Irma_getSlowData(..,p2)
+enum  IM_GAS_DATA
+{
+    IM_GAS_CO2,
+    IM_GAS_N2O,
+    IM_GAS_AX1,
+    IM_GAS_AX2,
+    IM_GAS_O2
+};
+//模块输出的数据[RID=0x0~0x6]
+//对应函数Irma_getSlowData(p1,..), Irma_getVersion(p1)
+enum  IM_GET_DATA
+{
+    //当前接收数据帧帧号
+    IM_GET_FRM_ID,
+    //当前模块总状态
+    IM_GET_SUM_STS,
+    //RID=0x00  Monitor InspVals(需要指定"第2参数p2-IM_GAS_DATA GAS_TYPE")
+    IM_GET_INSP,
+    //RID=0x01  Monitor ExpVals (需要指定"第2参数p2-IM_GAS_DATA GAS_TYPE")
+    IM_GET_EXP,
+    //RID=0x02  Monitor MomtVals(需要指定"第2参数p2-IM_GAS_DATA GAS_TYPE")
+    IM_GET_MOMT,
+    //RID=0x03  GenVals
+    IM_GET_BRE_RATE,         //获取呼吸频率[bpm]
+    IM_GET_LASTBRE_TM,       //获取距上次呼吸时间[255s MAX]
+    IM_GET_AX1,              //获取主麻醉气ID
+    IM_GET_AX2,              //获取从麻醉气ID
+    IM_GET_ATMP,             //获取大气压力值(2B)
+    //RID=0x04  SensorRegs
+    IM_GET_MODE,             //获取模块状态
+    IM_GET_O2_CMPEN,         //获取O2补偿浓度
+    IM_GET_NOBRE_TMOUT,      //获取无呼吸超时时间[20~60s]
+    //RID=0x05  SensorInfo
+    //GEN_SEN_CFG_REG0,        //模块配置寄存器0
+    //GEN_SEN_CFG_REG1,        //模块配置寄存器1
+    //IM_GET_HW_REV,           //模块硬件版本     (硬件、软件、通讯版本统一使用
+    //IM_GET_SW_REV,           //模块软件版本(2B)  Irma_getVersion(sn,sw,hw,cp)
+    //IM_GET_COMM_PROTO,       //模块通讯协议版本  获取)
+    IM_GET_SEN_TYPE,         //根据SEN_CFG_REG0/1获取模块类型[CO2/ICU/AX/OR/AX+/OR+/ISA CO2/ISA AX+,见IM_SENSOR_TYPE]
+    IM_GET_O2SEN_TYPE,       //RID5_Byte4_b2~b3 o2_sensor_type[0~3] 【sidestream only】
+    //RID=0x06  ServiceData
+    //IM_GET_SN,               //模块串号s/n(3B)
+    IM_GET_N2O_CMPEN,        //N2O补偿浓度
+    IM_GET_ATMP_CUVE,        //大气压-管道压+20的值[-2.0~23.4kPa 0=-2.0,254=23.4]
+    IM_GET_IR_O2_DLY         //RID6_Byte2_b4~b7 红外检测到O2检测间隔[0~15]【sidestream only】
+};
+//模块输出状态位[Byte3, RID=0x3,0x4,0x6]
+//包括总状态(SUM_STS 8b)、模块错误(SEN_ERR 5b)、适配器状态(ADAPT_STS 3b)、
+//    数据合法寄存器(DATA_VALID 8b)、工程师状态寄存器(SER_REG 8b)
+enum  IM_GEN_STS             //【不要更改顺序!!】
+{
+    //[SUMSTS 8b][every frame Byte3]
+    IM_STS_BRE_OK,           //b0: 呼吸检测(1:有呼吸，发送后自动清除)
+    IM_STS_NO_BRE,           //b1: 设定的无呼吸超时时间内无呼吸(1:无呼吸)
+    IM_STS_RESERVED,         //b2: 保留位
+    IM_STS_O2_REPL,          //b3: 需要更换氧传感器
+    IM_STS_CHK_ADAP,         //b4: [mainstream=检查适配器, sidestream=检查采样线]
+    IM_STS_DATA_INVA,        //b5: 测量数据超限 (与RID4_Byte4对应)
+    IM_STS_SEN_ERR,          //b6: 模块错误     (与RID4_Byte2对应)
+    IM_STS_O2_CALREQ,        //b7: 需要校正O2 [mainstream=Room Air / sidestream=O2 Span]
+    //[SEN_ERR 5b]
+    IM_SEN_SW_ERR,           //RID4_Byte2_b0  Restart Sensor
+    IM_SEN_HW_ERR,           //RID4_Byte2_b1  Replace Sensor
+    IM_SEN_MOTO_ERR,         //RID4_Byte2_b2  Motor Out Of Bounds
+    IM_SEN_FCTRY_ERR,        //RID4_Byte2_b3  Factory Data Lost
+    IM_SEN_O2_ERR,           //RID4_Byte2_b4  [mainstram=no use/sidestream=O2_ERR]
+    //[ADAPT_STS 3b]
+    IM_ADP_NEED_REPL,        //RID4_Byte3_b0  (ir_signal low)
+    IM_ADP_NO_ADAPT,         //RID4_Byte3_b1  (ir_signal high)
+    IM_ADP_O2P_CLOG,         //RID4_Byte3_b2  [mainstram=O2 Port Clogged/sidestream=no use]
+    //[DATA_VALID 8b]
+    IM_DVLI_CO2_OVFL,        //RID4_Byte4_b0  CO2浓度超限
+    IM_DVLI_N2O_OVFL,        //RID4_Byte4_b1  N2O浓度超限
+    IM_DVLI_AX_OVFL,         //RID4_Byte4_b2  任意一AX浓度超限
+    IM_DVLI_O2_OVFL,         //RID4_Byte4_b3  O2浓度超限
+    IM_DVLI_TEMP_OVFL,       //RID4_Byte4_b4  模块内温度超限
+    IM_DVLI_PRES_OVFL,       //RID4_Byte4_b5  气道压力超限
+    IM_DVLI_ZERO_REQ,        //RID4_Byte4_b6  需要校正
+    IM_DVLI_AGT_UNRLIB,      //RID4_Byte4_b7  麻醉气类型无法识别
+    //[SERVICE_REG 4b]
+    IM_SER_CAL_DISAB,        //RID6_Byte2_b0  1=校正不允许(in warm-up、no adapter)
+    IM_SER_IN_CALING,        //RID6_Byte2_b1  1=校正进行中标志
+    IM_SER_SPAN_ERR,         //RID6_Byte2_b2  1=最后一次范围校正命令错误  【sidestream only】
+    IM_SER_SPAN_CALING       //RID6_Byte2_b3  1=SPAN校正进行中标志        【sidestream only】
+};
+////////////////////////////////////////////////////////////////////////////////
+//【函数输入、返回的状态】
+enum  IM_FUNC_STS      //【不要更改数值!!】
+{
+    IM_TRUE       = 1, //函数返回或设置"真"
+    IM_FALSE      = 0, //函数返回或设置"假"
+    IM_ON         = 1, //说明模块通讯正常 2009-12-10 ht
+    IM_OFF        = 0, //说明模块通讯失败 2009-12-10 ht
+    IM_OK         = 0, //函数返回"待命""正常"
+    IM_ERR        = 1, //函数返回"错误"
+    IM_BUSY       = 2, //函数返回"忙"(正在读取或写数据) 2009-12-10 ht
+    IM_TMOUT      = 3, //函数返回"等待超时"
+    IM_INIT       = 4, //模块初始化
+    IM_RESET      = 5, //模块软重启
+    IM_NODEF      = 8  //函数返回非上述状态的值
+};
+//发送至模块的命令帧结构，含发送起始标志
+struct IRMA_TX_FRAME     //3B * TX_BUF_SIZE
+{
+    unsigned char flag1;  //恒为0xaa
+    unsigned char flag2;  //恒为0x55
+    unsigned char id;           //帧号1B，指令字
+    unsigned char para;         //指令参数 1B
+    unsigned char chk_sum;      //帧校验和[数据和的补码] 1B
+};
+enum IRMA_FRAME_ID
+{
+    IRMA_INSP_VALS,  //帧号0
+    IRMA_EXP_VALS,
+    IRMA_MOM_VALS,
+    IRMA_GEN_VALS,
+    IRMA_SENSOR_REGS,
+    IRMA_CONFIG_DATA,
+    IRMA_SERVICE_DATA,//帧号6
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//接收帧结构  (串口接收的原始数据)////////////////////////////////////////
+struct IRMA_RX_FRAME     //19B + 2B Flags = 21B
+{
+    unsigned char id;           //帧号1B，用于区分SLOW_DATA
+    unsigned char status;       //模块实时状态1B
+    unsigned char  wave_data[10]; //波形数据10B (FAST_DATA) 刷新间隔=0.05s
+    unsigned char slow_data[6]; //SLOW_DATA 6B 刷新间隔=0.5s
+    unsigned char chk_sum;      //帧校验和[数据和的补码] 1B
+};
+//数据接收控制字
+struct IRMA_RX_CTRL      //8B
+{
+    unsigned char R_nowbyte;    //当前接收1帧内的哪个字节[0~20]
+    unsigned char R_chksum;     //接收实际数据计算的校验和
+    enum IM_FUNC_STS R_rtnstat; //接收中断函数返回值[IM_OK/IM_BUSY/IM_NODEF]
+    unsigned char R_state[2];   //【状态:反映通讯是否连续及数据是否正确】
+    //【IM_ON时,接收帧正确时，R_state[0] = 0x80,
+    //  用户区数据更新后R_state[0]=0;
+    //  R_state[1]用于通讯恢复时连续正确接收帧的计数】
+    unsigned int  R_commEr_cnt; //通讯超时计数(最大: Irma_Comm_TmOut)
+    unsigned char R_commEr_flag;//通讯超时标志(0=清除,非0=有效)
+};
+//用户数据结构（但对用户不可见） 从同名头文件中转移至此处
+//“波形数据”缓冲 结构类型定义  /////////////////////////////////////////////////
+typedef struct _Im_Wave_Data    //【Total: 12B】
+{
+    unsigned char frm_id;      //数据帧号    1B
+    unsigned char sum_stat;    //模块总状态  1B
+    unsigned int  wv_val[5];   //波形数据[0~10000 => 0.00%~100.00%] 10B
+} IM_FAST_DATA;
+struct Im_Genvals      //模块产生的数据(将RID=0x3/0x4的数据合并) [11B]
+{
+    unsigned char sen_mode;        //模块当前模式[00:自检/01:睡眠/02:正常/03:DEMO] 1B
+    unsigned char bre_rate;        //呼吸频率        1B
+    unsigned char lstbre_tm;       //距上次呼吸时间  1B
+    unsigned char nobre_tmout;     //无呼吸超时时间设置值  1B [20~60s]
+    unsigned char ax1_id;          //麻醉气体1 ID    1B (AX/OR模块可对其设置,AX+/OR+/CO2only模块设置无效)
+    unsigned char ax2_id;          //麻醉气体2 ID    1B (只限AX+/OR+模块自动识别,无法被设置)
+    unsigned int  ax1_color;       //麻醉气体1 ID    1B (AX/OR模块可对其设置,AX+/OR+/CO2only模块设置无效)
+    unsigned int  ax2_color;       //麻醉气体2 ID    1B (只限AX+/OR+模块自动识别,无法被设置)
+    unsigned char ax1_type[4];     //麻醉气体1 ID    1B (AX/OR模块可对其设置,AX+/OR+/CO2only模块设置无效)
+    unsigned char ax2_type[4];     //麻醉气体2 ID    1B (只限AX+/OR+模块自动识别,无法被设置)
+    unsigned char o2_compn;        //O2补偿浓度(主机可通过setO2设置)  1B [0~115%]
+    unsigned char n2o_compn;       //N2O补偿浓度(主机可通过setN2O设置)1B [0~100%] RID6_Byte3
+    unsigned char ir_o2_dly;       //RID6_Byte2_b4~b7 IR到O2检测间隔[0~15s]【sidestream only】1B
+    unsigned int  atmp;            //当前大气压力    2B
+    int  atmp_cuve;       //（大气压-管道压+20），范围：-20～234，其中-20=-2.0kpa，234=23.4kpa
+    
+    char zero_disab;               //禁止零点标校 
+    char zero_inprogress;          //零点标校进行中
+	char span_err;
+	char span_inprogress;
+    //从结构体Im_Vervals转移至此处 
+    char O2_Calib;
+    
+    char sw_err;          //软件版本错误，重启传感器 
+    char hW_err;          //硬件版本错误，更换传感器报警 
+    char m_fail;          //电机速度超限
+    char un_cal;          //出厂校准缺失中
+	char o2sen_err;
+    char repl_adapt;          //更换适配器
+    char no_adapt;          //无适配器，请连接适配器
+    char o2_clg;          //氧气端口堵塞
+    char co2_or;          //二氧化碳超差
+    char n2o_or;          //一氧化二氮超差
+    char ax_or;          //至少一种麻醉气体超差
+    char o2_or;          //氧气超差
+    char temp_or;          //内部温度高
+    char press_or;          //大气压超出运行范围
+    char zero_or;          //零基准不准确，需要归零
+    char agen_id_unreliable;          //麻醉气体标识和浓度不可信
+};
+struct Im_Vervals      //模块版本数据(将RID=0x5/0x6的数据合并)   [10B]
+{
+    unsigned char commp_ver;       //通讯协议版本    1B [BCD码:00～99]
+    unsigned char hw_ver;          //模块硬件版本    1B [BCD码:00～99]
+    unsigned int  sw_ver;          //模块软件版本    2B [BCD码:0000～9999]
+    unsigned int  sen_type;        //模块类型        2B(实际9b) [SEN_CFG_REG0/1(b0)]
+    unsigned long serial_num;      //模块S/N串号     4B(实际3B) [0～16711425<255x65535><0xFEFF01>]
+};
+//“慢速数据”缓冲 结构类型定义  /////////////////////////////////////////////////
+typedef struct _Im_Slow_Data    //【Total: 36B】
+{
+    unsigned char   InspVal[5];    //气体吸入监测值[顺序与wv_value同] 5B [RID=0x00]
+    unsigned char    ExpVal[5];    //气体呼出监测值  5B  [RID=0x01]
+    unsigned char   MomtVal[5];    //气体瞬间监测值  5B  [RID=0x02]
+    struct Im_Genvals   GenVal;    //合并[RID=0x3/0x4]中的数据后的结构 11B
+    struct Im_Vervals   VerVal;    //合并[RID=0x5/0x6]中的数据后的结构 10B
+} IM_SLOW_DATA;
+//模块产生的状态位，排列顺序依照"enum IM_GEN_STS" //////////////////////////////
+typedef union _Im_Gen_Stats     //【Total:4B】
+{
+    unsigned char   sbyte[4];
+    unsigned long      slong;
+} IM_GEN_STATS;
+////////////////////////////////////////////////////////////////////////////////
+//模块产生的所有数据(IM_FAST_DATA,IM_SLOW_DATA,IM_GEN_STATS的归总)
+typedef struct _Im_All_Data     //【Total:36B+12B+4B = 52B】
+{
+    IM_FAST_DATA        fast;      //fast_data
+    IM_SLOW_DATA        slow;      //slow_data
+    IM_GEN_STATS        stat;      //all_generate_stats
+} IM_ALL_DATA;
+////////////////////////////////////////////////////////////////////////////////
+//【函数声明】//////////////////////////////////////////////////////////////////
+//上位机初始化函数(用户存储区、模块初始数据)
+CO2_IRMA_EXT void Irma_Host_Init(void); //
+//接收中断函数【将此函数放在模块对应的串口中断服务函数中】
+CO2_IRMA_EXT enum IM_FUNC_STS  Irma_RX_Int(unsigned char RxByte);
+//接收处理函数
+CO2_IRMA_EXT enum IM_FUNC_STS Irma_RX_Process(void);//
+//获取模块产生的数据(返回值最大uint,通常为1Byte)
+//按照 enum  IM_GET_DATA firstPara 给定要获取的值
+//部分FirstPara会有SecondPara,没有的SecondPara=0.
+//波形数据(刷新周期:50ms)
+CO2_IRMA_EXT enum IM_FUNC_STS Irma_getWaveData(enum IM_GAS_DATA gastype, unsigned int *returnval);
+//慢速数据(刷新周期:500ms)
+CO2_IRMA_EXT enum IM_FUNC_STS Irma_getSlowData(enum IM_GET_DATA command,
+        unsigned char gastype, int * returnval);
+int Im_getSlowData(enum IM_GET_DATA FirstPara, unsigned char SecondPara);
+//获取模块产生的状态(返回该位的值enum IM_FUNC_STS: IM_TRUE=1/IM_FALSE=0)
+//按照 enum  IM_GEN_STS status 给定[参数错误,返回0]
+CO2_IRMA_EXT enum IM_FUNC_STS  Irma_getState(enum IM_GEN_STS status);
+//获取模块串号SN(3B)、软件版本(2B)、硬件版本(1B)、通讯协议版本(1B)[返回IM_OK/IM_ERR/IM_BUSY]
+//按上述顺序给形参指针赋值，作为返回值, 用户给定相应类型的变量。获取期间函数返回IM_BUSY表示"正在获取"
+//【函数等待一帧新的版本数据收到后才获取版本，建议用户在1个循环中调用等待函数返回非IM_BUSY值退出循环】
+CO2_IRMA_EXT enum IM_FUNC_STS  Irma_getVersion(long *pSN,          //模块串号(3B)
+        unsigned int *pSW,  //软件版本(2B)
+        unsigned int *pHW,  //硬件版本(1B)
+        unsigned int *pCP,  //通讯协议(1B)
+        unsigned int *pMT); //模块类型(2B)
+CO2_IRMA_EXT void Irma_setOffline(void);//通知模块底层通讯超时
+//获取模块通讯失败标志  [返回IM_TRUE(通讯失败)/IM_FALSE(通讯正常)]
+CO2_IRMA_EXT enum IM_FUNC_STS Irma_getCommErrFlag(void);
+CO2_IRMA_EXT void Irma_CreateTxFrame(enum IM_TX_CMD cmd, unsigned char para, unsigned char *ptx_frame);//创建发送帧
+CO2_IRMA_EXT void Irma_CreateNormZeroCalFrame(unsigned char *ptx_frame);//创建普通零点标定命令帧
+CO2_IRMA_EXT void Irma_CreatePreSpanCalZeroFrame(unsigned char *ptx_frame);//创建进行定点标定前需发送的零点标定命令帧
+unsigned int Im_getWaveData(enum IM_GAS_DATA Para);
+int ConvO2ConcToComp(int conc);
+char Irma_getZeroState(void);
+char Irma_getSpanState(void);
+
+unsigned char PhaseIn_SetOpMode(unsigned char opmode,unsigned char* tx_buffer);
+unsigned char PhaseIn_SpanCal(unsigned char type,unsigned char data,unsigned char* tx_buffer);
+unsigned char PhaseIn_SetIRO2Delay(unsigned char data,unsigned char* tx_buffer);
+unsigned char PhaseIn_SetPump(unsigned char pump,unsigned char* tx_buffer);
+unsigned char PhaseIn_SetO2Option(unsigned char mode,unsigned char* tx_buffer);
+unsigned char PhaseIn_SetO2SensorType(unsigned char Type,unsigned char* tx_buffer);
+
+////////////////////////////////////////////////////////////////////////////////
+#endif  //[__CO2_IRMA_H__]
+

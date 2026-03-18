@@ -1,0 +1,233 @@
+#include "i2c.h"
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+void    RTEEPROMwrite(INT16U addr, INT8U databyte)
+{
+    INT8U temp_l,temp_h;
+    WriteEnable();
+    temp_l=(INT8U)(addr&0xFF);
+    temp_h=(INT8U)((addr>>8)&0xFF);
+    StartEERAM();
+    OutputData(IIC_WRITE);
+    AckEERAM();
+    OutputData(temp_h);
+    AckEERAM();
+    OutputData(temp_l);
+    AckEERAM();
+    OutputData(databyte);
+    StopEERAM();
+    WriteProtect();
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+INT8U   RTEEPROMread(INT16U addr)
+{
+    INT8U data;
+    INT8U temp_l,temp_h;
+    temp_l=(INT8U)(addr&0xFF);
+    temp_h=(INT8U)((addr>>8)&0xFF);
+    StartEERAM();
+    OutputData(IIC_WRITE);
+    AckEERAM();
+    OutputData(temp_h);
+    AckEERAM();
+    OutputData(temp_l);
+    AckEERAM();
+    StartEERAM();
+    OutputData(IIC_READ);
+    AckEERAM();
+    data=InputData();
+    AckEERAM();
+    StopEERAM();
+    return(data);
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+void    WriteEnable(void)
+{
+    //GpioDataRegs.GPBDAT.bit.GPIOB13=0;//write protect=0
+    WRITE_ENABLE;
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+void    WriteProtect(void)
+{
+    //GpioDataRegs.GPBDAT.bit.GPIOB13=1;//write protect=1
+    WRITE_DISABLE;
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+void    StartEERAM(void)
+{
+    SCL_LOW;
+    __no_operation();
+    __no_operation();
+    SDA_HIGH;
+    __no_operation();
+    __no_operation();
+    SCL_HIGH;
+    __no_operation();
+    __no_operation();
+    SDA_LOW;
+    __no_operation();
+    __no_operation();
+    SCL_LOW;
+    __no_operation();
+    __no_operation();
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+void    StopEERAM(void)
+{
+    SCL_LOW;
+    __no_operation();
+    __no_operation();
+    SDA_LOW;
+    __no_operation();
+    __no_operation();
+    SCL_HIGH;
+    __no_operation();
+    __no_operation();
+    SDA_HIGH;
+    __no_operation();
+    __no_operation();
+    SCL_LOW;
+    __no_operation();
+    __no_operation();
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+INT8U   AckEERAM(void)
+{
+    INT8U flag;
+    SCL_LOW;
+    __no_operation();
+    __no_operation();
+    SDA_HIGH;
+    __no_operation();
+    __no_operation();
+    SDA_INPUT;
+    __no_operation();
+    __no_operation();
+    SCL_HIGH;
+    __no_operation();
+    __no_operation();
+    flag = GET_SDA;
+    __no_operation();
+    __no_operation();
+    SCL_LOW;
+    __no_operation();
+    __no_operation();
+    SDA_OUTPUT;
+    __no_operation();
+    __no_operation();
+    return(flag);
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+void    OutputData(INT8U data)
+{
+    INT8U   i,data1;
+    for(i=0; i<8; i++)
+    {
+        data1=(data<<i)&0x80;
+        if(data1 != 0)
+        {
+            SDA_HIGH;
+            __no_operation();
+            __no_operation();
+        }
+        else
+        {
+            SDA_LOW;
+            __no_operation();
+            __no_operation();
+        }
+        SCL_HIGH;
+        __no_operation();
+        __no_operation();
+        SCL_LOW;
+        __no_operation();
+        __no_operation();
+    }
+}
+/*
+********************************************************************************
+名称：
+功能描述：
+入口参数：
+********************************************************************************
+*/
+INT8U   InputData(void)
+{
+    INT8U i,data=0;
+    SDA_INPUT;
+    __no_operation();
+    __no_operation();
+    SCL_HIGH;
+    __no_operation();
+    __no_operation();
+    data|=GET_SDA;
+    __no_operation();
+    __no_operation();
+    SCL_LOW;
+    __no_operation();
+    __no_operation();
+    for(i=0; i<7; i++)
+    {
+        data=data<<1;
+        SCL_HIGH;
+        __no_operation();
+        __no_operation();
+        data|=GET_SDA;
+        __no_operation();
+        __no_operation();
+        SCL_LOW;
+        __no_operation();
+        __no_operation();
+    }
+    SDA_OUTPUT;
+    __no_operation();
+    __no_operation();
+    return((INT8U)data);
+}

@@ -1,0 +1,1 @@
+Note: “SYS_STRS_SIZE”的大小需要比“DispKeyLib.h”最大的大

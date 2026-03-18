@@ -1,0 +1,13 @@
+"D:\IAR\Embedded Workbench 7.5\arm\bin\armproc.dll" 
+
+"D:\IAR\Embedded Workbench 7.5\arm\bin\armjlink2.dll" 
+
+"C:\Users\zj\Desktop\X45_Dev\LPC1788_Flash_Debug\Exe\LCD_Demo.out" 
+
+--plugin "D:\IAR\Embedded Workbench 7.5\arm\bin\armbat.dll" 
+
+--device_macro "D:\IAR\Embedded Workbench 7.5\arm\config\debugger\NXP\LPC177x_LPC178x.dmac" 
+
+
+
+

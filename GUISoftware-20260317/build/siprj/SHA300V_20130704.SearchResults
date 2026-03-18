@@ -1,0 +1,16 @@
+---- etCO2 Æ¥Åä (16 ÔÚ 6 ÎÄ¼þ ) ----
+Alarm_Handle.c (Application):            AlarmCheckEtCO2((Int16U)CO2_Parameters.etCO2,insp_flag);
+C002_CO2.c (Application):        Para->etCO2 = MotorolaFastFloatingPointConversion(data);
+C002_CO2.c (Application):            Para->etCO2 =  (Para->etCO2) * 1.33;
+C002_CO2.h (Application):    float etCO2;
+RectPaintCtrl.h (Application):    etCO2,
+RectPaintCtrl.h (Application):    "etCO2",
+Static_Menu_creat.c (Application):            if(CO2_Parameters.etCO2 > 133)
+Static_Menu_creat.c (Application):                CO2_Parameters.etCO2 = 133;
+Static_Menu_creat.c (Application):            pText = _Float2String((float)(CO2_Parameters.etCO2/10),1);
+Static_Menu_creat.c (Application):            if(CO2_Parameters.etCO2 > 100)//cpp add 20130325 //MonitorPara.EtCO2Value //cpp md 20130510
+Static_Menu_creat.c (Application):                CO2_Parameters.etCO2 = 100; //MonitorPara.EtCO2Value //cpp md 20130510
+Static_Menu_creat.c (Application):            pText = _Float2String((float)(CO2_Parameters.etCO2),1);//MonitorPara.EtCO2Value //cpp md 20130510
+Static_Menu_creat.c (Application):            TextExCtrl_SetTextData(tWin,(int)(CO2_Parameters.etCO2));
+Static_Menu_creat.c (Application):            TextExCtrl_SetTextData(tWin,(int)(CO2_Parameters.etCO2 * 10));
+WIDGET_Multipage.c (Application):        String = _Float2String((float)CO2_Parameters.etCO2,0);//MonitorPara.EtCO2Value //cpp md 20130510

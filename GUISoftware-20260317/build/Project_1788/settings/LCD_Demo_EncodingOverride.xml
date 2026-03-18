@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<userOverrides>
+  <override>
+    <path>E:\SRD\Code\X45_20220705\GUISoftware\Application\phasein_CO2_IRMA.C</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>E:\&#x5F53;&#x524D;&#x5De5;&#x7A0B;\&#x6700;&#x65B0;&#x5De5;&#x7A0B;\X6X45\X6X45&#x4Fee;&#x6539;IIC\Application\language\system_str.c</path>
+    <encoding>System</encoding>
+  </override>
+</userOverrides>
+
+

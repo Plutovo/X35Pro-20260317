@@ -1,0 +1,51 @@
+#define VT_1600              0
+#define PINSP_70             1
+#define IE_41                2
+#define TINSP_10             3
+#define TINSP_TPAUSE_10      4
+#define PSUPP_70             5
+#define SIMV_FREQ_40         6
+#define FREQ_100             7
+#define PEEP_30              8
+#define PAUSE_60             9
+#define ESENSE_80            10
+#define TSLOPE_2             11
+#define FSENSE_20            12
+#define PSENSE_20            13
+#define VT_10                14
+#define PINSP_5              15
+#define IE_110               16
+#define TINSP_1              17
+#define FREQ_1               18
+#define PSUPP_0              19
+#define PEEP_0FF             20
+#define PAUSE_0              21
+#define TSLOPE_0             22
+#define FSENSE_5             23
+#define PSENSE_0             24
+#define ESENSE_5             25
+#define TINSP_TPAUSE_1       26
+#define TINSP_TSLOPE         27
+#define FLOW_HIGH            28
+#define FLOW_LOW             29
+#define PSUPP_PEEP_70        30
+#define PINSP_PEEP_70        31
+#define PINSP_PEEP_PH        32
+#define PSUPP_PEEP_PH        33
+#define PEEP_PH              34
+#define BACKUP_VCV           35
+#define BACKUP_PCV           36
+#define PINSP_30             37
+#define PINSP_50             38
+#define PEEP_PSUPP_30        39
+#define PEEP_PSUPP_50        40
+#define PEEP_20              41
+#define IE_1                 42
+#define TEXP_LOW             43
+
+
+//调节通气参数时显示的实时数据
+#define MAX_FLOW             1
+#define TINSP_TIME           2
+#define IE_RATIO             3
+

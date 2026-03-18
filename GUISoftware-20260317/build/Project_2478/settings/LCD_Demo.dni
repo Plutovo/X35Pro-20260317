@@ -1,0 +1,171 @@
+[JLinkDriver]
+WatchCond=_ 0
+Watch0=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
+Watch1=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[CodeCoverage]
+Enabled=_ 0
+[Profiling]
+Enabled=0
+[StackPlugin]
+Enabled=1
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnHow=0
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[DebugChecksum]
+Checksum=-87472400
+[InstructionProfiling]
+Enabled=_ 0
+[RecentFlashDownload]
+Path=E:\SafeHeart_work\anesthesia\software\GUI\Vent_Monitor_8.4_20130325\build\IAR\Debug\Exe\LCD_Demo.out
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[Interrupts]
+Enabled=1
+[MemoryMap]
+Enabled=0
+Base=0
+UseAuto=0
+TypeViolation=1
+UnspecRange=1
+ActionState=1
+[PowerLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+Stripe=1 0 1000 2 1 0
+[InterruptLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[TraceHelper]
+Enabled=0
+ShowSource=1
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[CallStackLog]
+Enabled=0
+[DriverProfiling]
+Enabled=0
+Mode=0
+Graph=0
+Symbiont=0
+[Breakpoints2]
+Count=0
+[Disassemble mode]
+mode=0
+[Breakpoints]
+Bp0=_ "STD_CODE" "{C:\Users\Administrator\Desktop\X6X45_20160425\board\include\iolpc1788 and 2478.h}.5668.1@1" 0 0 0 0 "" 0 "" 0
+Bp1=_ "STD_CODE" "{C:\Users\Administrator\Desktop\X6X45_20160425\board\include\iolpc1788 and 2478.h}.5668.1@1" 0 0 0 0 "" 0 "" 0
+Bp2=_ "STD_CODE" "{C:\Users\Administrator\Desktop\X6X45_20160425\Application\TouchScreenCalibrate.c}.198.9@1" 0 0 0 0 "" 0 "" 0
+Bp3=_ "STD_CODE" "{C:\windows\system32}.45.5@1" 0 0 0 0 "" 0 "" 0
+Bp4=_ "STD_CODE" "{C:\windows\system32}.56.14@1" 0 0 0 0 "" 0 "" 0
+Count=5
+[Aliases]
+A0=_ "C:\Documents and Settings\sunjiajun\桌面\X6_20141128_V02\Application\main.c" ""
+A1=_ "C:\Documents and Settings\sunjiajun\桌面\X6_20141128_V02\board\sys.c" ""
+A2=_ "C:\Program Files\IAR Systems\Embedded Workbench 5.4\arm\INC\DLib_Product_string.h" ""
+A3=_ "D:\IAR\5.5\arm\INC\DLib_Product_string.h" ""
+A4=_ "D:\Program Files\IAR Systems\Embedded Workbench 5.4\arm\INC\DLib_Product_string.h" ""
+A5=_ "D:\桌面\X6_X45\X6_20140521_V02\Application\main.c" ""
+A6=_ "D:\桌面\X6_X45\X6_20140521_V02\GUI\Core\LCD_GetEx.c" ""
+A7=_ "D:\桌面\X6_X45\X6_20140521_V02\board\sys.c" ""
+A8=_ "D:\桌面\x5\X5_20140514_V02\GUI\Core\GUI2DLib.c" ""
+A9=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\Application\ButtonExCtrlA.c" ""
+A10=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\Application\ButtonRotationEx.c" ""
+A11=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\Application\Communication_Handle.c" ""
+A12=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\Application\POWER_INFO.c" ""
+A13=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\Application\TracingCurveEx.c" ""
+A14=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\Application\main.c" ""
+A15=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Core\GUIVal.c" ""
+A16=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Core\GUIValf.c" ""
+A17=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Core\GUI_Goto.c" ""
+A18=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Core\GUI_Pen.c" ""
+A19=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Core\GUI_TOUCH_DriverAnalog.c" ""
+A20=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Core\LCD_GetEx.c" ""
+A21=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\LCDDriver\LCD_NXP.c" ""
+A22=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Widget\MULTIEDIT.c" ""
+A23=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\GUI\Widget\MULTIPAGE.c" ""
+A24=_ "E:\Custom\R50 Doc\djq_Move_Version\han\X5_20131209_V05\X5_20131209_V05\board\sys.c" ""
+A25=_ "E:\Custom\X6\X6_20141128_V02\Application\main.c" "E:\dujiqina\X6_20141128_V02\Application\main.c"
+A26=_ "E:\Custom\X6\X6_20141128_V02\GUI\Core\GUI_GetFontSizeY.c" ""
+A27=_ "E:\Custom\X6\X6_20141128_V02\GUI\Core\GUI_SetClipRect.c" ""
+A28=_ "E:\Custom\X6\X6_20141128_V02\GUI\Core\GUI_SetColor.c" ""
+A29=_ "E:\Custom\X6\X6_20141128_V02\GUI\Core\GUI_SetDrawMode.c" ""
+A30=_ "E:\Custom\X6\X6_20141128_V02\GUI\LCDDriver\LCD_NXP.c" "E:\dujiqina\X6_20141128_V02\GUI\LCDDriver\LCD_NXP.c"
+A31=_ "E:\Custom\X6\X6_20141128_V02\GUI\WM\WMMemDev.c" ""
+A32=_ "E:\Custom\X6\X6_20141128_V02\GUI\WM\WM_ForEachDesc.c" ""
+A33=_ "E:\Custom\X6\X6_20141128_V02\GUI\WM\WM_IsWindow.c" ""
+A34=_ "E:\Custom\X6\X6_20141128_V02\GUI\WM\WM_SendMessageNoPara.c" ""
+A35=_ "E:\Custom\X6\X6_20141204_V11\Application\TrendApplication.c" ""
+A36=_ "E:\SafeHeart_work\anesthesia\software\GUI\Vent_Monitor_8.4\Application\main.c" ""
+A37=_ "E:\UI程序\GUI Program\呼吸麻醉机\OEM_X5_X3\印度客户\X5_20131226_V06\Application\main.c" "E:\UI程序\GUI Program\呼吸麻醉机\OEM_X5_X3\印度客户\X5_20131230_V06\Application\main.c"
+A38=_ "E:\acc\X6_X45\X6X45_20160425\Application\main.c" ""
+A39=_ "E:\acc\X6_X45\X6X45_20160425\GUI\Core\GUI_UC.c" ""
+A40=_ "E:\dujiqina\X6_20141128_V02\Application\ButtonExCtrlA.c" ""
+A41=_ "E:\dujiqina\X6_20141128_V02\Application\ButtonRotationEx.c" ""
+A42=_ "E:\dujiqina\X6_20141128_V02\Application\POWER_INFO.c" ""
+A43=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUIChar.c" ""
+A44=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUIVal.c" ""
+A45=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUIValf.c" ""
+A46=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_GetFontSizeY.c" ""
+A47=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_Goto.c" ""
+A48=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_Pen.c" ""
+A49=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_SetClipRect.c" ""
+A50=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_SetColor.c" ""
+A51=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_SetDrawMode.c" ""
+A52=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\GUI_TOUCH_DriverAnalog.c" ""
+A53=_ "E:\dujiqina\X6_20141128_V02\GUI\Core\LCD_GetEx.c" ""
+A54=_ "E:\dujiqina\X6_20141128_V02\GUI\LCDDriver\LCD_NXP.c" ""
+A55=_ "E:\dujiqina\X6_20141128_V02\GUI\WM\WMMemDev.c" ""
+A56=_ "E:\dujiqina\X6_20141128_V02\GUI\WM\WM_ForEachDesc.c" ""
+A57=_ "E:\dujiqina\X6_20141128_V02\GUI\WM\WM_GetInsideRectExScrollbar.c" ""
+A58=_ "E:\dujiqina\X6_20141128_V02\GUI\WM\WM_IsWindow.c" ""
+A59=_ "E:\dujiqina\X6_20141128_V02\GUI\WM\WM_SendMessageNoPara.c" ""
+A60=_ "E:\dujiqina\X6_20141128_V02\GUI\Widget\MULTIEDIT.c" ""
+A61=_ "E:\dujiqina\X6_20141128_V02\GUI\Widget\MULTIPAGE.c" ""
+A62=_ "E:\dujiqina\X6_20141204_V11\Application\AddFunETCO2.c" ""
+A63=_ "E:\dujiqina\X6_20141204_V11\Application\WIDGET_Multipage.c" ""
+A64=_ "E:\dujiqina\X6_20141204_V11\Application\main.c" ""
+A65=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUIVal.c" ""
+A66=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUIValf.c" ""
+A67=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_DrawFocusRect.c" ""
+A68=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_GetFontSizeY.c" ""
+A69=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_SetClipRect.c" ""
+A70=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_SetColor.c" ""
+A71=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_SetDrawMode.c" ""
+A72=_ "E:\dujiqina\X6_20141204_V11\GUI\Core\GUI_TOUCH_DriverAnalog.c" ""
+A73=_ "E:\dujiqina\X6_20141204_V11\GUI\WM\WMMemDev.c" ""
+A74=_ "E:\dujiqina\X6_20141204_V11\GUI\WM\WM_ForEachDesc.c" ""
+A75=_ "E:\dujiqina\X6_20141204_V11\GUI\WM\WM_IsWindow.c" ""
+A76=_ "E:\dujiqina\X6_20141204_V11\GUI\WM\WM_SendMessageNoPara.c" ""
+A77=_ "E:\dujiqina\X6_20141204_V11\GUI\Widget\BUTTON_Bitmap.c" ""
+A78=_ "E:\dujiqina\X6_20141204_V11\board\i2c.c" ""
+A79=_ "E:\dujiqina\X6_20141204_V11\board\sys.c" ""
+A80=_ "E:\合作项目\safe heart\呼吸机工作目录\software\Vent_Monitor\GUI\WM\WM_GetDialogItem.c" ""
+A81=_ "E:\合作项目\safe heart\麻醉机工作目录\software\Vent_Monitor_8.4\GUI\Core\GUI_GetBitmapPixelIndex.c" ""
+Count=82
+SuppressDialog=1

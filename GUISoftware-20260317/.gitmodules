@@ -1,0 +1,7 @@
+[submodule "GUI/Font/FontLib"]
+	path = GUI/Font/FontLib
+	url = ../../Library/FontLibrary.git
+[submodule "Application/DispStrsLib"]
+	path = Application/DispStrsLib
+	url = ../../Library/DisplayStringsLibrary.git
+	branch = branch_Human
